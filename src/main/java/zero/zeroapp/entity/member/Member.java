@@ -3,6 +3,7 @@ package zero.zeroapp.entity.member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zero.zeroapp.entity.common.BaseTimeEntity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +15,7 @@ import static java.util.stream.Collectors.toSet;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
