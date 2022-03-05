@@ -1,4 +1,4 @@
-package zero.zeroapp.repository;
+package zero.zeroapp.repository.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import zero.zeroapp.entity.member.Member;
