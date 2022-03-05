@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import zero.zeroapp.entity.member.Role;
 import zero.zeroapp.entity.member.RoleType;
+import zero.zeroapp.exception.RoleNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
