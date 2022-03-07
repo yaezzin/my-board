@@ -29,7 +29,7 @@ public class SignController {
 
     @PostMapping("/api/sign-in")
     @ResponseStatus(HttpStatus.OK)
-    public Response signIn(@Valid @RequestBody SignInRequest request) { // 3
+    public Response signIn(@Valid @RequestBody SignInRequest request) {
         return success(signService.signIn(request));
     }
 

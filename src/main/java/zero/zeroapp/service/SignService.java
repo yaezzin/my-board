@@ -16,6 +16,7 @@ import zero.zeroapp.exception.RoleNotFoundException;
 import zero.zeroapp.repository.member.MemberRepository;
 import zero.zeroapp.repository.role.RoleRepository;
 
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
