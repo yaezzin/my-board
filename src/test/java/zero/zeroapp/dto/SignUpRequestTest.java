@@ -1,6 +1,7 @@
 package zero.zeroapp.dto;
 
 import org.junit.jupiter.api.Test;
+import zero.zeroapp.dto.sign.SignUpRequest;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -9,7 +10,6 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class SignUpRequestTest {
 

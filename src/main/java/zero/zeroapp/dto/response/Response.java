@@ -1,4 +1,4 @@
-package zero.zeroapp.controller.response;
+package zero.zeroapp.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;

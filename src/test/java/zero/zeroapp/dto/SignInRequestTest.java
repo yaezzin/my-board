@@ -1,6 +1,7 @@
 package zero.zeroapp.dto;
 
 import org.junit.jupiter.api.Test;
+import zero.zeroapp.dto.sign.SignInRequest;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

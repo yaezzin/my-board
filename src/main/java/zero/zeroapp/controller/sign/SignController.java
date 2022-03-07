@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import zero.zeroapp.controller.response.Response;
-import zero.zeroapp.dto.SignInRequest;
-import zero.zeroapp.dto.SignUpRequest;
+import zero.zeroapp.dto.response.Response;
+import zero.zeroapp.dto.sign.SignInRequest;
+import zero.zeroapp.dto.sign.SignUpRequest;
 import zero.zeroapp.service.SignService;
 
 import javax.validation.Valid;
 
-import static zero.zeroapp.controller.response.Response.success;
+import static zero.zeroapp.dto.response.Response.success;
 
 @RestController
 @RequiredArgsConstructor

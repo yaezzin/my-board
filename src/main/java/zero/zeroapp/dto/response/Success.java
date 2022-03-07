@@ -1,4 +1,4 @@
-package zero.zeroapp.controller.response;
+package zero.zeroapp.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
