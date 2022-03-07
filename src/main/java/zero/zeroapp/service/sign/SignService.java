@@ -1,4 +1,4 @@
-package zero.zeroapp.service;
+package zero.zeroapp.service.sign;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

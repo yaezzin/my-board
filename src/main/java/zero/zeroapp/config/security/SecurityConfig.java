@@ -11,7 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import zero.zeroapp.service.TokenService;
+import zero.zeroapp.service.sign.TokenService;
 
 @RequiredArgsConstructor
 @EnableWebSecurity

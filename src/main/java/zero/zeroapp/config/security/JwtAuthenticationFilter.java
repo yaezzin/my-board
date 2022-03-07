@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
-import zero.zeroapp.service.TokenService;
+import zero.zeroapp.service.sign.TokenService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

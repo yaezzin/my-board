@@ -18,7 +18,7 @@ import zero.zeroapp.exception.LoginFailureException;
 import zero.zeroapp.exception.MemberEmailAlreadyExistsException;
 import zero.zeroapp.exception.MemberNicknameAlreadyExistsException;
 import zero.zeroapp.exception.RoleNotFoundException;
-import zero.zeroapp.service.SignService;
+import zero.zeroapp.service.sign.SignService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

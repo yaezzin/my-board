@@ -9,7 +9,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import zero.zeroapp.dto.response.Response;
 import zero.zeroapp.dto.sign.SignInRequest;
 import zero.zeroapp.dto.sign.SignUpRequest;
-import zero.zeroapp.service.SignService;
+import zero.zeroapp.service.sign.SignService;
 
 import javax.validation.Valid;
 
