@@ -4,22 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import zero.zeroapp.dto.sign.RefreshTokenResponse;
 import zero.zeroapp.dto.sign.SignInRequest;
 import zero.zeroapp.dto.sign.SignInResponse;
 import zero.zeroapp.dto.sign.SignUpRequest;
 import zero.zeroapp.entity.member.Member;
 import zero.zeroapp.entity.member.RoleType;
-import zero.zeroapp.exception.LoginFailureException;
-import zero.zeroapp.exception.MemberEmailAlreadyExistsException;
-import zero.zeroapp.exception.MemberNicknameAlreadyExistsException;
-import zero.zeroapp.exception.RoleNotFoundException;
+import zero.zeroapp.exception.*;
 import zero.zeroapp.repository.member.MemberRepository;
 import zero.zeroapp.repository.role.RoleRepository;
 
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class SignService {
 
     private final MemberRepository memberRepository;
@@ -41,6 +38,7 @@ public class SignService {
     }
 
     // 로그인 처리
+    @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest req) {
         Member member = memberRepository.findByEmail(req.getEmail()).orElseThrow(LoginFailureException::new);
         validatePassword(req, member);
@@ -73,5 +71,19 @@ public class SignService {
             throw new MemberNicknameAlreadyExistsException(request.getNickname());
         }
     }
+
+    public RefreshTokenResponse refreshToken(String rToken) {
+        validateRefreshToken(rToken);
+        String subject = tokenService.extractRefreshTokenSubject(rToken);
+        String accessToken = tokenService.createAccessToken(subject);
+        return new RefreshTokenResponse(accessToken);
+    }
+
+    private void validateRefreshToken(String rToken) {
+        if(!tokenService.validateRefreshToken(rToken)) {
+            throw new AuthenticationEntryPointException();
+        }
+    }
+
 
 }
