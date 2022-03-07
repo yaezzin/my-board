@@ -3,6 +3,9 @@ spring:
     active: local
     include: secret
 
+  servlet.multipart.max-file-size: 5MB
+  servlet.multipart.max-request-size: 5MB
+
 jwt:
   key:
     access: base64 인코딩된 key
