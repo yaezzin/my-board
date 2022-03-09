@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import zero.zeroapp.dto.post.PostCreateRequest;
-import zero.zeroapp.dto.post.PostCreateResponse;
+import zero.zeroapp.dto.post.*;
 import zero.zeroapp.entity.post.Image;
 import zero.zeroapp.entity.post.Post;
+import zero.zeroapp.exception.PostNotFoundException;
 import zero.zeroapp.repository.catetory.CategoryRepository;
 import zero.zeroapp.repository.member.MemberRepository;
 import zero.zeroapp.repository.post.PostRepository;
@@ -39,7 +39,32 @@ public class PostService {
         return new PostCreateResponse(post.getId());
     }
 
+    public PostDto read(Long id) {
+        return PostDto.toDto(postRepository.findById(id).orElseThrow(PostNotFoundException::new));
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+        deleteImages(post.getImages());
+        postRepository.delete(post);
+    }
+
+    @Transactional
+    public PostUpdateResponse update(Long id, PostUpdateRequest req) {
+        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+        Post.ImageUpdatedResult result = post.update(req);
+        uploadImages(result.getAddedImages(), result.getAddedImageFiles());
+        deleteImages(result.getDeletedImages());
+        return new PostUpdateResponse(id);
+    }
+
     private void uploadImages(List<Image> images, List<MultipartFile> fileImages) {
         IntStream.range(0, images.size()).forEach(i -> fileService.upload(fileImages.get(i), images.get(i).getUniqueName()));
     }
+
+    private void deleteImages(List<Image> images) {
+        images.stream().forEach(i -> fileService.delete(i.getUniqueName()));
+    }
+
 }

@@ -14,11 +14,15 @@ import zero.zeroapp.advice.ExceptionAdvice;
 import zero.zeroapp.dto.post.PostCreateRequest;
 import zero.zeroapp.exception.CategoryNotFoundException;
 import zero.zeroapp.exception.MemberNotFoundException;
+import zero.zeroapp.exception.PostNotFoundException;
 import zero.zeroapp.exception.UnsupportedImageFormatException;
 import zero.zeroapp.service.post.PostService;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,6 +70,18 @@ public class PostControllerAdviceTest {
         performCreate()
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(-1013));
+    }
+
+    @Test
+    void deleteExceptionByPostNotFoundTest() throws Exception {
+        // given
+        doThrow(PostNotFoundException.class).when(postService).delete(anyLong());
+
+        // when, then
+        mockMvc.perform(
+                        delete("/api/posts/{id}", 1L))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(-1012));
     }
 
     private ResultActions performCreate() throws Exception {

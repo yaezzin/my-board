@@ -2,15 +2,14 @@ package zero.zeroapp.controller.post;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import zero.zeroapp.aop.AssignMemberId;
 import zero.zeroapp.dto.post.PostCreateRequest;
+import zero.zeroapp.dto.post.PostUpdateRequest;
 import zero.zeroapp.dto.response.Response;
 import zero.zeroapp.service.post.PostService;
 
@@ -30,6 +29,30 @@ public class PostController {
     @AssignMemberId
     public Response create(@Valid @ModelAttribute PostCreateRequest req) {
         return Response.success(postService.create(req));
+    }
+
+    @ApiOperation(value = "게시글 조회", notes = "게시글을 조회한다.")
+    @GetMapping("/api/posts/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response read(@ApiParam(value = "게시글 id", required = true) @PathVariable Long id) {
+        return Response.success(postService.read(id));
+    }
+
+    @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제한다.")
+    @DeleteMapping("/api/posts/{id}")
+    @ResponseStatus(HttpStatus.OK) //삭제 성공 시 200 응답
+    public Response delete(@ApiParam(value = "게시글 id", required = true) @PathVariable Long id) {
+        postService.delete(id);
+        return Response.success();
+    }
+
+    @ApiOperation(value = "게시글 수정", notes = "게시글을 수정한다.")
+    @PutMapping("/api/posts/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response update(
+            @ApiParam(value = "게시글 id", required = true) @PathVariable Long id,
+            @Valid @ModelAttribute PostUpdateRequest req) {
+        return Response.success(postService.update(id, req));
     }
 
 }

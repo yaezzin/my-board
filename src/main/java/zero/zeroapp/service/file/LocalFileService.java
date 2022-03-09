@@ -36,6 +36,7 @@ public class LocalFileService implements FileService {
 
     @Override
     public void delete(String filename) {
-
+        new File(location + filename).delete();
     }
+
 }

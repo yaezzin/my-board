@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static zero.zeroapp.factory.dto.PostCreateRequestFactory.createPostCreateRequestWithImages;
 
@@ -68,4 +68,29 @@ class PostControllerTest {
         PostCreateRequest capturedRequest = postCreateRequestArgumentCaptor.getValue();
         assertThat(capturedRequest.getImages().size()).isEqualTo(2);
     }
+
+    @Test
+    void readTest() throws Exception {
+        // given
+        Long id = 1L;
+
+        // when, then
+        mockMvc.perform(
+                        get("/api/posts/{id}", id))
+                .andExpect(status().isOk());
+        verify(postService).read(id);
+    }
+
+    @Test
+    void deleteTest() throws Exception {
+        // given
+        Long id = 1L;
+
+        // when, then
+        mockMvc.perform(
+                        delete("/api/posts/{id}", id))
+                .andExpect(status().isOk());
+        verify(postService).delete(id);
+    }
+
 }

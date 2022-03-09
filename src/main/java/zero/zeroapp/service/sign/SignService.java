@@ -14,7 +14,6 @@ import zero.zeroapp.exception.*;
 import zero.zeroapp.repository.member.MemberRepository;
 import zero.zeroapp.repository.role.RoleRepository;
 
-
 @Service
 @RequiredArgsConstructor
 public class SignService {
