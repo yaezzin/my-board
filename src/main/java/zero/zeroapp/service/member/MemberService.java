@@ -1,9 +1,11 @@
 package zero.zeroapp.service.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zero.zeroapp.dto.member.MemberDto;
+import zero.zeroapp.entity.member.Member;
 import zero.zeroapp.exception.MemberNotFoundException;
 import zero.zeroapp.repository.member.MemberRepository;
 
@@ -21,13 +23,9 @@ public class MemberService {
 
     //삭제
     @Transactional
+    @PreAuthorize("@memberGuard.check(#id)")
     public void delete(Long id) {
-        if(notExistsMember(id)) throw new MemberNotFoundException();
-        memberRepository.deleteById(id);
+        Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
+        memberRepository.delete(member);
     }
-
-    private boolean notExistsMember(Long id) {
-        return !memberRepository.existsById(id);
-    }
-
 }

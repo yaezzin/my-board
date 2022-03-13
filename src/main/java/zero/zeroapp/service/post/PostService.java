@@ -1,6 +1,7 @@
 package zero.zeroapp.service.post;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ import java.util.stream.IntStream;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+
 public class PostService {
 
     private final PostRepository postRepository;
@@ -44,6 +46,7 @@ public class PostService {
     }
 
     @Transactional
+    @PreAuthorize("@memberGuard.check(#id)")
     public void delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         deleteImages(post.getImages());
@@ -51,6 +54,7 @@ public class PostService {
     }
 
     @Transactional
+    @PreAuthorize("@memberGuard.check(#id)")
     public PostUpdateResponse update(Long id, PostUpdateRequest req) {
         Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         Post.ImageUpdatedResult result = post.update(req);

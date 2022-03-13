@@ -4,40 +4,33 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
-import zero.zeroapp.service.sign.TokenService;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
-    private final TokenService tokenService;
+
     private final CustomUserDetailsService userDetailsService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = extractToken(request);
-        if(validateToken(token)) {
-            setAuthentication(token);
-        }
+        extractToken(request).map(userDetailsService::loadUserByUsername).ifPresent(this::setAuthentication);
         chain.doFilter(request, response);
     }
 
-    private String extractToken(ServletRequest request) {
-        return ((HttpServletRequest)request).getHeader("Authorization");
-    }
-
-    private boolean validateToken(String token) {
-        return token != null && tokenService.validateAccessToken(token);
-    }
-
-    private void setAuthentication(String token) {
-        String userId = tokenService.extractAccessTokenSubject(token);
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+    private void setAuthentication(CustomUserDetails userDetails) {
         SecurityContextHolder.getContext().setAuthentication(new CustomAuthenticationToken(userDetails, userDetails.getAuthorities()));
     }
 
+    private Optional<String> extractToken(ServletRequest request) {
+        return Optional.ofNullable(((HttpServletRequest) request).getHeader("Authorization"));
+    }
 }

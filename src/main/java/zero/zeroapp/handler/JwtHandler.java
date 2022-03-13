@@ -1,44 +1,38 @@
 package zero.zeroapp.handler;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class JwtHandler {
+
     private String type = "Bearer ";
 
-    public String createToken(String encodedKey, String subject, long maxAgeSeconds) {
+    public String createToken(String key, Map<String, Object> privateClaims, long maxAgeSeconds) {
         Date now = new Date();
         return type + Jwts.builder()
-                .setSubject(subject) // 토큰에 저장될 데이터 지정 -> member의 id값
-                .setIssuedAt(now) // 토큰 발급일 지정
-                .setExpiration(new Date(now.getTime() + maxAgeSeconds * 1000L)) //토큰 만료일 지정
-                .signWith(SignatureAlgorithm.HS256, encodedKey)
+                .addClaims(privateClaims)
+                .addClaims(Map.of(Claims.ISSUED_AT, now, Claims.EXPIRATION, new Date(now.getTime() + maxAgeSeconds * 1000L)))
+                .signWith(SignatureAlgorithm.HS256, key.getBytes())
                 .compact();
     }
 
-    public String extractSubject(String encodedKey, String token) {
-        return parse(encodedKey, token).getBody().getSubject();
-    }
-
-    public boolean validate(String encodedKey, String token) {
+    public Optional<Claims> parse(String key, String token) {
         try {
-            parse(encodedKey, token);
-            return true;
+            return Optional.of(Jwts.parser().setSigningKey(key.getBytes()).parseClaimsJws(untype(token)).getBody());
         } catch (JwtException e) {
-            return false;
+            return Optional.empty();
         }
     }
 
-    private Jws<Claims> parse(String key, String token) {
-        return Jwts.parser() //parser을 이용해 사용뙨 key를 지정 후 파싱
-                .setSigningKey(key)
-                .parseClaimsJws(untype(token));
-    }
-
-    private String untype(String token) { // 토큰 문자열에서 토큰타입 제거
+    private String untype(String token) {
         return token.substring(type.length());
     }
 }

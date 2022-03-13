@@ -1,4 +1,7 @@
 spring:
+  messages:
+    basename:i18n/exception
+
   mvc:
     hiddenmethod:
       filter:
@@ -15,6 +18,13 @@ spring:
 
   servlet.multipart.max-file-size: 5MB
   servlet.multipart.max-request-size: 5MB
+
+
+logging:
+  level:
+    org:
+      springframework:
+        web: debug
 
 jwt:
   key:

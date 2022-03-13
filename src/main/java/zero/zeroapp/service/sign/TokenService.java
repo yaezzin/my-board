@@ -1,10 +1,8 @@
 package zero.zeroapp.service.sign;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import zero.zeroapp.handler.JwtHandler;
 
+
+/*
 @Service
 @RequiredArgsConstructor
 public class TokenService {
@@ -48,3 +46,5 @@ public class TokenService {
     }
 
 }
+
+*/
