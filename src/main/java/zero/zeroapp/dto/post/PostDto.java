@@ -1,12 +1,10 @@
 package zero.zeroapp.dto.post;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import zero.zeroapp.dto.member.MemberDto;
 import zero.zeroapp.entity.post.Post;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -17,24 +15,18 @@ public class PostDto {
     private Long id;
     private String title;
     private String content;
-    //private Long price;
+    private Long price;
     private MemberDto member;
     private List<ImageDto> images;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createdDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime modifiedDate;
 
     public static PostDto toDto(Post post) {
         return new PostDto(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
+                post.getPrice(),
                 MemberDto.toDto(post.getMember()),
-                post.getImages().stream().map(i -> ImageDto.toDto(i)).collect(toList()),
-                post.getCreatedDate(),
-                post.getModifiedDate()
+                post.getImages().stream().map(i -> ImageDto.toDto(i)).collect(toList())
         );
     }
 }

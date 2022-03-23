@@ -1,5 +1,6 @@
 package zero.zeroapp.dto.post;
 
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -36,12 +37,10 @@ public class PostCreateRequest {
     @NotBlank(message = "게시글 본문을 입력해주세요.")
     private String content;
 
-    /**
-     * @ApiModelProperty(value = "가격", notes = "가격을 입력해주세요", required = true, example = "50000")
-     * @NotNull(message = "가격을 입력해주세요.")
-     * @PositiveOrZero(message = "0원 이상을 입력해주세요")
-     * private Long price;
-    **/
+    @ApiModelProperty(value = "가격", notes = "가격을 입력해주세요", required = true, example = "50000")
+    @NotNull(message = "가격을 입력해주세요.")
+    @PositiveOrZero(message = "0원 이상을 입력해주세요")
+    private Long price;
 
     @ApiModelProperty(hidden = true)
     @Null
@@ -59,11 +58,10 @@ public class PostCreateRequest {
         return new Post(
                 req.title,
                 req.content,
-                //req.price,
+                req.price,
                 memberRepository.findById(req.getMemberId()).orElseThrow(MemberNotFoundException::new),
                 categoryRepository.findById(req.getCategoryId()).orElseThrow(CategoryNotFoundException::new),
                 req.images.stream().map(i -> new Image(i.getOriginalFilename())).collect(toList())
         );
     }
 }
-

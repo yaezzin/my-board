@@ -1,7 +1,7 @@
 package zero.zeroapp.service.post;
 
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +20,6 @@ import java.util.stream.IntStream;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-
 public class PostService {
 
     private final PostRepository postRepository;
@@ -45,16 +44,13 @@ public class PostService {
         return PostDto.toDto(postRepository.findById(id).orElseThrow(PostNotFoundException::new));
     }
 
-    @Transactional
-    @PreAuthorize("@memberGuard.check(#id)")
-    public void delete(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
-        deleteImages(post.getImages());
-        postRepository.delete(post);
+
+    private void uploadImages(List<Image> images, List<MultipartFile> fileImages) {
+        IntStream.range(0, images.size()).forEach(i -> fileService.upload(fileImages.get(i), images.get(i).getUniqueName()));
     }
 
+
     @Transactional
-    @PreAuthorize("@memberGuard.check(#id)")
     public PostUpdateResponse update(Long id, PostUpdateRequest req) {
         Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         Post.ImageUpdatedResult result = post.update(req);
@@ -63,8 +59,11 @@ public class PostService {
         return new PostUpdateResponse(id);
     }
 
-    private void uploadImages(List<Image> images, List<MultipartFile> fileImages) {
-        IntStream.range(0, images.size()).forEach(i -> fileService.upload(fileImages.get(i), images.get(i).getUniqueName()));
+    @Transactional
+    public void delete(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+        deleteImages(post.getImages());
+        postRepository.delete(post);
     }
 
     private void deleteImages(List<Image> images) {

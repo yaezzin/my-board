@@ -23,15 +23,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().mvcMatchers("/exception/**",
+
+        web.ignoring()
+                .mvcMatchers("/exception/**",
                 "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**");
+
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable() // http basic 인증방식 비활성화
-                .formLogin().disable() // form login 비활성화
+                .formLogin() // form login 비활성화
+                .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 유지 x
                 .and()
@@ -53,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/api/messages/sender/{id}").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/api/messages/receiver/{id}").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
-                .anyRequest().hasAnyRole("ADMIN")
+                //.anyRequest().hasAnyRole("ADMIN")
 
 
                 // "@<빈이름>.<메소드명>(<인자, #id로하면 URL에 지정한 {id}가 매핑되어서 인자로 들어감>)"

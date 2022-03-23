@@ -2,6 +2,13 @@ spring:
   messages:
     basename:i18n/exception
 
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
   mvc:
     hiddenmethod:
       filter:
@@ -19,12 +26,14 @@ spring:
   servlet.multipart.max-file-size: 5MB
   servlet.multipart.max-request-size: 5MB
 
-
 logging:
   level:
     org:
       springframework:
         web: debug
+
+server:
+  port: ${PORT:8080}
 
 jwt:
   key:
@@ -33,5 +42,4 @@ jwt:
   max-age:
     access: 1800 # 60 * 30
     refresh: 604800 # 60 * 60 * 24 * 7
-
 

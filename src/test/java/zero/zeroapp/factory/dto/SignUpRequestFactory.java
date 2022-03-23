@@ -1,6 +1,5 @@
 package zero.zeroapp.factory.dto;
 
-
 import zero.zeroapp.dto.sign.SignUpRequest;
 
 public class SignUpRequestFactory {

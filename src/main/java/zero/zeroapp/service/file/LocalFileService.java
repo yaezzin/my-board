@@ -15,10 +15,10 @@ import java.io.IOException;
 public class LocalFileService implements FileService {
 
     @Value("${upload.image.location}")
-    private String location; // 1
+    private String location;
 
     @PostConstruct
-    void postConstruct() { // 2
+    void postConstruct() {
         File dir = new File(location);
         if (!dir.exists()) {
             dir.mkdir();
@@ -38,5 +38,4 @@ public class LocalFileService implements FileService {
     public void delete(String filename) {
         new File(location + filename).delete();
     }
-
 }

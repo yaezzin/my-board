@@ -19,43 +19,43 @@ public class Image {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false) // 이미지 구분을 위해 고유한 이름 부여
+    @Column(nullable = false)
     private String uniqueName;
 
-    @Column(nullable = false) // 원래 이미지 이름
+    @Column(nullable = false)
     private String originName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) // 게시글 제거 시 이미지도 연쇄적으로 제거 -> @OnDelete
-    private Post post;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Post post; // 1
 
-    private final static String supportedExtension[] = {"jpg", "jpeg", "gif", "bmp", "png"}; // 지원하는 이미지 확장자
+    private final static String supportedExtension[] = {"jpg", "jpeg", "gif", "bmp", "png"}; // 2
 
     public Image(String originName) {
-        this.uniqueName = generateUniqueName(extractExtension(originName)); // 생성자에서 각 이미지의 고유한 이름을 생성
+        this.uniqueName = generateUniqueName(extractExtension(originName)); // 3
         this.originName = originName;
     }
 
-    public void initPost(Post post) { // Post 클래스 Image를 추가할 때 호출하는 메소드
+    public void initPost(Post post) { // 4
         if(this.post == null) {
             this.post = post;
         }
     }
 
-    private String generateUniqueName(String extension) {
+    private String generateUniqueName(String extension) { // 5
         return UUID.randomUUID().toString() + "." + extension;
     }
 
-    private String extractExtension(String originName) { // 이미지에서 확장자 추출
+    private String extractExtension(String originName) { // 6
         try {
             String ext = originName.substring(originName.lastIndexOf(".") + 1);
             if(isSupportedFormat(ext)) return ext;
         } catch (StringIndexOutOfBoundsException e) { }
-        throw new UnsupportedImageFormatException(); //지원하지 않는 확장자인 경우 예외 발생
+        throw new UnsupportedImageFormatException();
     }
 
-    private boolean isSupportedFormat(String ext) { // 지원하는 확장자인지 확인
+    private boolean isSupportedFormat(String ext) { // 7
         return Arrays.stream(supportedExtension).anyMatch(e -> e.equalsIgnoreCase(ext));
     }
 

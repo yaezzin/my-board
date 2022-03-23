@@ -149,7 +149,6 @@ class PostRepositoryTest {
         assertThat(foundMember.getEmail()).isEqualTo(member.getEmail());
     }
 
-
     @Test
     void updateTest() {
         // given
@@ -160,7 +159,7 @@ class PostRepositoryTest {
 
         // when
         MockMultipartFile cFile = new MockMultipartFile("c", "c.png", MediaType.IMAGE_PNG_VALUE, "cFile".getBytes());
-        PostUpdateRequest postUpdateRequest = createPostUpdateRequest("update title", "update content",  List.of(cFile), List.of(a.getId()));
+        PostUpdateRequest postUpdateRequest = createPostUpdateRequest("update title", "update content", 1234L, List.of(cFile), List.of(a.getId()));
         Post foundPost = postRepository.findById(post.getId()).orElseThrow(PostNotFoundException::new);
         foundPost.update(postUpdateRequest);
         clear();
@@ -169,7 +168,7 @@ class PostRepositoryTest {
         Post result = postRepository.findById(post.getId()).orElseThrow(PostNotFoundException::new);
         assertThat(result.getTitle()).isEqualTo(postUpdateRequest.getTitle());
         assertThat(result.getContent()).isEqualTo(postUpdateRequest.getContent());
-        //assertThat(result.getPrice()).isEqualTo(postUpdateRequest.getPrice());
+        assertThat(result.getPrice()).isEqualTo(postUpdateRequest.getPrice());
         List<Image> images = result.getImages();
         List<String> originNames = images.stream().map(i -> i.getOriginName()).collect(toList());
         assertThat(images.size()).isEqualTo(2);
