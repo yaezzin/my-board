@@ -44,6 +44,10 @@ public class PostService {
         return PostDto.toDto(postRepository.findById(id).orElseThrow(PostNotFoundException::new));
     }
 
+    //*** 전체 목록 조회 추가
+    public List<Post> readAll() {
+        return postRepository.findAll();
+    }
 
     private void uploadImages(List<Image> images, List<MultipartFile> fileImages) {
         IntStream.range(0, images.size()).forEach(i -> fileService.upload(fileImages.get(i), images.get(i).getUniqueName()));

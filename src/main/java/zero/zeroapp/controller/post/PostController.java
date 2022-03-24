@@ -12,9 +12,11 @@ import zero.zeroapp.aop.AssignMemberId;
 import zero.zeroapp.dto.post.PostCreateRequest;
 import zero.zeroapp.dto.post.PostUpdateRequest;
 import zero.zeroapp.dto.response.Response;
+import zero.zeroapp.entity.post.Post;
 import zero.zeroapp.service.post.PostService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(value = "Post Controller", tags = "Post")
 @RestController
@@ -36,6 +38,14 @@ public class PostController {
     @ResponseStatus(HttpStatus.OK)
     public Response read(@ApiParam(value = "게시글 id", required = true) @PathVariable Long id) {
         return Response.success(postService.read(id));
+    }
+
+    @ApiOperation(value = "게시글 전체 조회", notes = "게시글 목록을 조회한다.")
+    @GetMapping("/api/posts")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Post> readAll() {
+        return postService.readAll();
+        //return Response.success(postService.readAll());
     }
 
     @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제한다.")

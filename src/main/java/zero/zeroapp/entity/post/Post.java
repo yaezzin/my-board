@@ -41,15 +41,15 @@ public class Post extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Member member; // 1
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Category category; // 2
+    private Category category;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Image> images; // 3
+    private List<Image> images;
 
     public Post(String title, String content, Long price, Member member, Category category, List<Image> images) {
         this.title = title;
@@ -58,10 +58,10 @@ public class Post extends BaseTimeEntity {
         this.member = member;
         this.category = category;
         this.images = new ArrayList<>();
-        addImages(images); // 4
+        addImages(images);
     }
 
-    public ImageUpdatedResult update(PostUpdateRequest req) { // 1
+    public ImageUpdatedResult update(PostUpdateRequest req) {
         this.title = req.getTitle();
         this.content = req.getContent();
         this.price = req.getPrice();
@@ -71,7 +71,7 @@ public class Post extends BaseTimeEntity {
         return result;
     }
 
-    private void addImages(List<Image> added) { // 5
+    private void addImages(List<Image> added) {
         added.stream().forEach(i -> {
             images.add(i);
             i.initPost(this);
@@ -82,7 +82,7 @@ public class Post extends BaseTimeEntity {
         deleted.stream().forEach(di -> this.images.remove(di));
     }
 
-    // 3
+
     private ImageUpdatedResult findImageUpdatedResult(List<MultipartFile> addedImageFiles, List<Long> deletedImageIds) {
         List<Image> addedImages = convertImageFilesToImages(addedImageFiles);
         List<Image> deletedImages = convertImageIdsToImages(deletedImageIds);
@@ -107,7 +107,7 @@ public class Post extends BaseTimeEntity {
 
     @Getter
     @AllArgsConstructor
-    public static class ImageUpdatedResult { // 4
+    public static class ImageUpdatedResult {
         private List<MultipartFile> addedImageFiles;
         private List<Image> addedImages;
         private List<Image> deletedImages;
