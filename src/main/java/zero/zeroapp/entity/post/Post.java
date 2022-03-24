@@ -8,7 +8,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.web.multipart.MultipartFile;
 import zero.zeroapp.dto.post.PostUpdateRequest;
-import zero.zeroapp.entity.category.Category;
 import zero.zeroapp.entity.common.BaseTimeEntity;
 import zero.zeroapp.entity.member.Member;
 
@@ -43,20 +42,23 @@ public class Post extends BaseTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
+
+    /*
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Category category;
+    */
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Image> images;
 
-    public Post(String title, String content, Long price, Member member, Category category, List<Image> images) {
+    public Post(String title, String content, Long price, Member member, List<Image> images) {
         this.title = title;
         this.content = content;
         this.price = price;
         this.member = member;
-        this.category = category;
+        //this.category = category;
         this.images = new ArrayList<>();
         addImages(images);
     }

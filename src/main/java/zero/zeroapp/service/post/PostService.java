@@ -9,7 +9,6 @@ import zero.zeroapp.dto.post.*;
 import zero.zeroapp.entity.post.Image;
 import zero.zeroapp.entity.post.Post;
 import zero.zeroapp.exception.PostNotFoundException;
-import zero.zeroapp.repository.catetory.CategoryRepository;
 import zero.zeroapp.repository.member.MemberRepository;
 import zero.zeroapp.repository.post.PostRepository;
 import zero.zeroapp.service.file.FileService;
@@ -24,7 +23,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final CategoryRepository categoryRepository;
+    //private final CategoryRepository categoryRepository;
     private final FileService fileService;
 
     @Transactional
@@ -32,8 +31,8 @@ public class PostService {
         Post post = postRepository.save(
                 PostCreateRequest.toEntity(
                         req,
-                        memberRepository,
-                        categoryRepository
+                        memberRepository
+                        //categoryRepository
                 )
         );
         uploadImages(post.getImages(), req.getImages());
