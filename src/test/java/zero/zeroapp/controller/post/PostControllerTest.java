@@ -37,7 +37,7 @@ class PostControllerTest {
     }
 
     @Test
-    void createTest() throws Exception {
+    void createTest() throws Exception{
         // given
         ArgumentCaptor<PostCreateRequest> postCreateRequestArgumentCaptor = ArgumentCaptor.forClass(PostCreateRequest.class);
 
@@ -54,7 +54,7 @@ class PostControllerTest {
                                 .file("images", imageFiles.get(1).getBytes())
                                 .param("title", req.getTitle())
                                 .param("content", req.getContent())
-                                //.param("price", String.valueOf(req.getPrice()))
+                                .param("price", String.valueOf(req.getPrice()))
                                 .param("categoryId", String.valueOf(req.getCategoryId()))
                                 .with(requestPostProcessor -> {
                                     requestPostProcessor.setMethod("POST");
@@ -80,6 +80,7 @@ class PostControllerTest {
                 .andExpect(status().isOk());
         verify(postService).read(id);
     }
+
 
     @Test
     void deleteTest() throws Exception {
